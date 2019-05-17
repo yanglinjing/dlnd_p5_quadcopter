@@ -41,8 +41,6 @@ class Task():
         # calculate reward
         reward = reward + bonus - penalty
 
-        # This get_reward() function is retrived from https://github.com/pfoy/Quadcopter-Deep-Reinforcement-Learning/blob/master/task.py 
-
         return np.tanh(reward)
 
     def step(self, rotor_speeds):
