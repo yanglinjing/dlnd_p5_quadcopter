@@ -1,7 +1,7 @@
 import numpy as np
 from tasks.physics_sim import PhysicsSim
 
-class Task():
+class DDGPTask():
     """Task (environment) that defines the goal and provides feedback to the agent."""
     def __init__(self, init_pose=None, init_velocities=None,
         init_angle_velocities=None, runtime=5., target_pos=None):
@@ -28,20 +28,10 @@ class Task():
 
     def get_reward(self):
         """Uses current pose of sim to return reward."""
-        # new reward function, start reward at 0
-        reward = 0.
-        # calculate the coordinate distance from the target position
-        dist_x = abs(self.sim.pose[0] - self.target_pos[0])
-        dist_y = abs(self.sim.pose[1] - self.target_pos[1])
-        dist_z = abs(self.sim.pose[2] - self.target_pos[2])
-        # create penalty, starting with 0.03
-        penalty = 0.3*(np.sqrt((dist_x**2) + (dist_y**2) + (dist_z**2)))
-        # add bonus
-        bonus = 10.
-        # calculate reward
-        reward = reward + bonus - penalty
 
-        return np.tanh(reward)
+        reward = np.tanh(1 - 0.03*(abs(self.sim.pose[:3] - self.target_pos))).sum()
+
+        return reward
 
     def step(self, rotor_speeds):
         """Uses action to obtain next state, reward, done."""

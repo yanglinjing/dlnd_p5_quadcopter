@@ -2,8 +2,6 @@ import numpy as np
 from keras import layers, models, optimizers, regularizers
 from keras import backend as K
 
-
-
 class Critic:
     """Critic (Value) Model."""
 
@@ -30,20 +28,16 @@ class Critic:
 
         # Add hidden layer(s) for state pathway
         net_states = layers.Dense(units=512,kernel_regularizer=regularizers.l2(1e-6))(states)
-        net_states = layers.BatchNormalization()(net_states)
         net_states = layers.Activation("relu")(net_states)
 
         net_states = layers.Dense(units=256,kernel_regularizer=regularizers.l2(1e-6))(net_states)
-        net_states = layers.BatchNormalization()(net_states)
         net_states = layers.Activation("relu")(net_states)
 
         # Add hidden layer(s) for action pathway
         net_actions = layers.Dense(units=512,kernel_regularizer=regularizers.l2(1e-6))(actions)
-        net_actions = layers.BatchNormalization()(net_actions)
         net_actions = layers.Activation("relu")(net_actions)
 
         net_actions = layers.Dense(units=256,kernel_regularizer=regularizers.l2(1e-6))(net_actions)
-        net_actions = layers.BatchNormalization()(net_actions)
         net_actions = layers.Activation("relu")(net_actions)
 
         # Try different layer sizes, activations, add batch normalization, regularizers, etc.
@@ -61,7 +55,7 @@ class Critic:
         self.model = models.Model(inputs=[states, actions], outputs=Q_values)
 
         # Define optimizer and compile model for training with built-in loss function
-        optimizer = optimizers.Adam(lr=.001) # learning rate
+        optimizer = optimizers.Adam(lr = .01) # learning rate
         self.model.compile(optimizer=optimizer, loss='mse')
 
         # Compute action gradients (derivative of Q values w.r.t. to actions)

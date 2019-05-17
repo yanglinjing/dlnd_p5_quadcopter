@@ -1,3 +1,6 @@
+#回放缓冲区
+#大多数现代强化学习算法都使用一个回放存储器或缓冲区来存储和回调经验元组
+
 import random
 from collections import namedtuple, deque
 
